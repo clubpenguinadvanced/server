@@ -5,6 +5,8 @@ import Ignore from './Ignore'
 import Inventory from './Inventory'
 import PurchaseValidator from './PurchaseValidator'
 
+import CryptoJS from 'crypto-js'
+
 
 export default class User {
 
@@ -120,9 +122,18 @@ export default class User {
     update(query) {
         this.db.users.update(query, { where: { id: this.data.id }})
     }
+	
+	encryptData(text){
+  		const passphrase = 'clubpenguinadvanced';
+  		return CryptoJS.AES.encrypt(text, passphrase).toString();
+	};
 
     send(action, args = {}) {
-        this.socket.emit('message', JSON.stringify({ action: action, args: args }))
+		let messagedata = JSON.stringify({ action: action, args: args })
+		
+        this.socket.emit('message', this.encryptData(messagedata))
+		
+		let parsed = JSON.parse(messagedata)
     }
 
     close() {

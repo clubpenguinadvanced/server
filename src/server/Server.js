@@ -1,4 +1,5 @@
 import RateLimiterFlexible from 'rate-limiter-flexible'
+import CryptoJS from 'crypto-js'
 
 import User from '../objects/user/User'
 
@@ -29,6 +30,13 @@ export default class Server {
 
         console.log(`[Server] Started world ${id} on port ${config.worlds[id].port}`)
     }
+	
+	decryptData(ciphertext){
+		const passphrase = 'clubpenguinadvanced';
+		const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+		const originalText = bytes.toString(CryptoJS.enc.Utf8);
+		return originalText;
+	};
 
     createIo(config, options) {
         let server = (config.https)
@@ -68,7 +76,7 @@ export default class Server {
         this.rateLimiter.consume(user.socket.handshake.address)
             .then(() => {
                 // Allowed
-                this.handler.handle(message, user)
+                this.handler.handle(this.decryptData(message), user)
             })
             .catch(() => {
                 // Blocked

@@ -1,6 +1,8 @@
 import Plugin from '../Plugin'
 
 import profaneWords from 'profane-words'
+import Perspective from 'perspective-api-client'
+import { Client, Intents } from 'discord.js'
 
 
 export default class Chat extends Plugin {
@@ -19,7 +21,20 @@ export default class Chat extends Plugin {
         }
 
         this.bindCommands()
+		
+		const token = "ODg3NzY5MTc4NDk5NTkyMjEz.YUI9eg.AGilmsli9YnqoFKmwOswqq3IkKs"
+		const dcbot = new Client({ intents: [Intents.FLAGS.GUILDS] });
+		this.dcbot = dcbot
+		this.dcbot.once('ready', () => {
+			console.log('Discord Chat Logging ready!');
+		});
+		this.dcbot.login(token)
+		
+		this.perspective = new Perspective({apiKey: "AIzaSyAGrdo9wP9RIwz45wODfgwiTWmMGqmCt5M"});
+		
     }
+	
+	
 
     // Events
 
@@ -28,6 +43,23 @@ export default class Chat extends Plugin {
         if (args.message.startsWith('!')) {
             return this.processCommand(args.message.substring(1), user)
         }
+		
+		(async () => {
+            const result = await this.perspective.analyze({
+			"comment": {text: args.message},
+			"languages":["en"],
+			"requestedAttributes":{"TOXICITY":{}, "SEXUALLY_EXPLICIT":{}, "PROFANITY":{}}			
+			});
+			const toxicity = result.attributeScores.TOXICITY.summaryScore.value * 100
+			const profanity = result.attributeScores.PROFANITY.summaryScore.value * 100
+			const sexual = result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
+			console.log("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
+            if (toxicity > 90 || profanity > 90 || sexual > 90) channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
+        })();
+		
+		const channel = this.dcbot.channels.cache.get('873544076732026930')
+		
+		//channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name)
 
         if (profaneWords.some((word) => args.message.toLowerCase().indexOf(word) >= 0)) {
             return

@@ -75,6 +75,10 @@ export default class Database {
     }
 
     async getUserByUsername(username) {
+		//let test = await this.findOne('users', {
+            //where: { id: 2 }
+        //})
+		//console.log(test)
         return await this.findOne('users', {
             where: { username: username }
         })

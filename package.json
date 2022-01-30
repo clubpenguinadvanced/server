@@ -34,10 +34,13 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
+    "discord.js": "^13.6.0",
     "fastest-validator": "^1.9.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "perspective-api-client": "^3.1.0",
     "pm2": "^5.1.2",
     "profane-words": "^1.4.0",
     "rate-limiter-flexible": "^2.2.1",
