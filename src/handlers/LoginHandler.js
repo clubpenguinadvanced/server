@@ -41,7 +41,7 @@ export default class LoginHandler {
                 empty: false,
                 trim: true,
                 type: 'string',
-                min: 4,
+                min: 3,
                 max: 12,
                 messages: {
                     stringEmpty: 'You must provide your Penguin Name to enter Club Penguin',
