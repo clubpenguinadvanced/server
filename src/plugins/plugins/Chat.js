@@ -44,6 +44,10 @@ export default class Chat extends Plugin {
             return this.processCommand(args.message.substring(1), user)
         }
 		
+		if (args.message.length < 1){
+			return
+		}
+		
 		(async () => {
             const result = await this.perspective.analyze({
 			"comment": {text: args.message},
