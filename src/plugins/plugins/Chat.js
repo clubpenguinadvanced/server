@@ -57,7 +57,7 @@ export default class Chat extends Plugin {
 			const toxicity = result.attributeScores.TOXICITY.summaryScore.value * 100
 			const profanity = result.attributeScores.PROFANITY.summaryScore.value * 100
 			const sexual = result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
-			console.log("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
+			//console.log("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
             if (toxicity > 90 || profanity > 90 || sexual > 90) channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
         })();
 		

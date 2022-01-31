@@ -22,8 +22,13 @@ export default class MiniGame extends Plugin {
     }
 	
 	endRuffleMinigame(args, user) {
-		user.updateCoins(args.coins)
-		user.send('end_ruffle_mingame', { coins: user.data.coins, game: args.game, coinsEarned: args.coins })
+		if (args.coins > 15000){
+			return
+		}
+		else{
+			user.updateCoins(args.coins)
+			user.send('end_ruffle_mingame', { coins: user.data.coins, game: args.game, coinsEarned: args.coins })
+		}
 	}
 
     sendMove(args, user) {
