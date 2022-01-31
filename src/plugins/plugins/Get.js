@@ -14,7 +14,7 @@ export default class Get extends Plugin {
         if (!args.id) return
 
         let userData = await this.db.getUserById(args.id)
-        let { banned, coins, loginKey, password, rank, ...penguin } = userData.dataValues
+        let { banned, coins, loginKey, password, ...penguin } = userData.dataValues
 
         if (userData) {
             user.send('get_player', { penguin: penguin })
