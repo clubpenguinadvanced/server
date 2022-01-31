@@ -8,7 +8,8 @@ export default class MiniGame extends Plugin {
         this.events = {
             'start_game': this.startGame,
             'send_move': this.sendMove,
-            'game_over': this.gameOver
+            'game_over': this.gameOver,
+			'end_ruffle_mingame': this.endRuffleMinigame
         }
 
         this.defaultScoreGames = [904, 905, 906, 912, 916, 917, 918, 919, 950, 952]
@@ -19,6 +20,11 @@ export default class MiniGame extends Plugin {
             user.waddle.startGame(user)
         }
     }
+	
+	endRuffleMinigame(args, user) {
+		user.updateCoins(args.coins)
+		user.send('end_ruffle_mingame', { coins: user.data.coins, game: args.game, coinsEarned: args.coins })
+	}
 
     sendMove(args, user) {
         if (user.inWaddleGame) {
