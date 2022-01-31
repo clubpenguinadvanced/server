@@ -98,7 +98,7 @@ export default class Chat extends Plugin {
     }
 
     addItem(args, user) {
-        if (user.isModerator) {
+        if (user.data.rank > 3) {
             this.plugins.item.addItem({ item: args[0] }, user)
         }
     }

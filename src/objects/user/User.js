@@ -52,7 +52,8 @@ export default class User {
             x: this.x,
             y: this.y,
             frame: this.frame,
-            rank: this.data.rank
+            rank: this.data.rank,
+			joinTime: this.data.joinTime
         }
     }
 
