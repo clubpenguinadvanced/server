@@ -57,18 +57,12 @@ export default class DataHandler {
         message.split('\xdd').filter(Boolean).forEach(packet => {
             try {
                 let parsed = JSON.parse(packet)
-				console.log(parsed)
                 console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
 
                 // Only allow game_auth until user is authenticated
                 if (!user.authenticated && parsed.action != 'game_auth') {
                     return user.close()
                 }
-				
-				
-				if (parsed.key != 'JrKvJh5xBaQgJad7KXB56ty7uY77rhnVPLHe5M4caj2fDCW3gnTvBePwDcbnrre3fhyaEcRNVYRt3g8wzzbWPAyppa4pUzT5mLHXpSMHEe5NzA3E2JFhkvnhQQMGDLtH4wuLkKtLUXDKadNhpgxsrdpXc9YnzLEvEQpvxcsZtuWHteXP44AHNWxbJTX9g995zEK7PmUUmjEEHJ3WsFPHm5Y82tQDerKQKDrZtCfNxwYV7JBKPNGw55MvYBfrYb7AHxXajK2YGrvw3SamnT2cLQttd3WxE8b6M3MwCFr8a2QvYK5wNAb8WjDGZZWQss92cdBn9ssRqd6evu4thMaF4SV4cmNQAHWEyeCBpEYrEh8VrwUMdgktrLGVkx2CE6MSCkZ3xRZA3wuswhq4Z6LnXxkTXrfF34qcba8pU7DdmVwRzyM8fM8SUQ2WLMBnFHrdsYCPtpCAnGgGSTDL8zEbvbVLJLjeWz3pXaYY7GQPn7jef4s6XEsZPS9SngPSEMSH'){
-					return user.close()
-				}
 
                 this.fireEvent(parsed.action, parsed.args, user)
 
