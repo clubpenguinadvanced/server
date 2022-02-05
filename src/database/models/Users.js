@@ -76,6 +76,14 @@ export default class Users extends Sequelize.Model {
                 flag: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
+                },
+                username_approved: {
+                    type: DataTypes.INTEGER(1),
+                    allowNull: false
+                },
+                username_rejected: {
+                    type: DataTypes.INTEGER(1),
+                    allowNull: false
                 }
             },
             { sequelize, timestamps: false, tableName: 'users' }

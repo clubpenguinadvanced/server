@@ -75,10 +75,6 @@ export default class Database {
     }
 
     async getUserByUsername(username) {
-		//let test = await this.findOne('users', {
-            //where: { id: 2 }
-        //})
-		//console.log(test)
         return await this.findOne('users', {
             where: { username: username }
         })
@@ -89,7 +85,13 @@ export default class Database {
             where: { id: userId }
         })
     }
-
+	
+	async getUnverifedUsers(userId) {
+        return await this.findAll('users', {
+            where: { username_approved: "0", username_rejected: "0" }
+        })
+    }
+	
     async getAuthToken(userId, selector) {
         return await this.findOne('authTokens', {
             where: { userId: userId, selector: selector }

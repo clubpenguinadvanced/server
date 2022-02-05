@@ -43,33 +43,29 @@ export default class Chat extends Plugin {
         if (args.message.startsWith('!')) {
             return this.processCommand(args.message.substring(1), user)
         }
-		
+
 		if (args.message.length < 1){
 			return
 		}
-		
+
 		(async () => {
             const result = await this.perspective.analyze({
 			"comment": {text: args.message},
 			"languages":["en"],
-			"requestedAttributes":{"TOXICITY":{}, "SEXUALLY_EXPLICIT":{}, "PROFANITY":{}}			
+			"requestedAttributes":{"TOXICITY":{}, "SEXUALLY_EXPLICIT":{}, "PROFANITY":{}}
 			});
 			const toxicity = result.attributeScores.TOXICITY.summaryScore.value * 100
 			const profanity = result.attributeScores.PROFANITY.summaryScore.value * 100
 			const sexual = result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
-			//console.log("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
-            if (toxicity > 90 || profanity > 90 || sexual > 90) channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
+            if (toxicity > 75 || profanity > 75 || sexual > 75) channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name + "\n**TOXICITY:** " + toxicity.toString().split(".")[0] + "\n**PROFANITY:** " + profanity.toString().split(".")[0] + "\n**SEXUAL:** " + sexual.toString().split(".")[0]);
+            if (profanity > 90 || sexual > 90){
+		user.close()
+		return
+            }
+            user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
         })();
-		
-		const channel = this.dcbot.channels.cache.get('873544076732026930')
-		
-		//channel.send("**USER:** " + user.data.username + "\n**SENT MESSAGE:** " + args.message + "\n**IN ROOM:** " + user.room.name)
 
-        if (profaneWords.some((word) => args.message.toLowerCase().indexOf(word) >= 0)) {
-            return
-        }
-
-        user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
+	const channel = this.dcbot.channels.cache.get('873544076732026930')
     }
 
     sendSafe(args, user) {
