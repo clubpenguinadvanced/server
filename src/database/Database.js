@@ -226,7 +226,7 @@ export default class Database {
 		let user = await this.getUserById(userID)
 		
 		this.users.update({
-            coins: user.dataValues.coins + coins
+            coins: parseInt(user.dataValues.coins) + parseInt(coins)
         }, {
             where: {
                 id: userID
